@@ -1,11 +1,9 @@
 # selivrando
 Aplicativo voltado para troca de livros (CEBO Virtual)
 
+
 Equipe: 
 JORDAN DOS SANTOS OLIVEIRA
-
 CHRISTIAN IGOR BAHIA CARDOSO
-
 MATHEUS CARNEIRO DE SOUZA BARROS
-
 GABRIEL MATHEUS LOPES DE VERAS
