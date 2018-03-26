@@ -1,4 +1,4 @@
-# selivrando
+# SeLivrando
 Aplicativo voltado para troca de livros (CEBO Virtual)
 
 
