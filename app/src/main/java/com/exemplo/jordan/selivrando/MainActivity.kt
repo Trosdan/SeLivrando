@@ -7,11 +7,13 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,6 +33,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        rv.setHasFixedSize(true)
+        rv.layoutManager = LinearLayoutManager(this)
+
+        var eventos:ArrayList<Evento> = ArrayList<Evento>()
+        for(i in 0..100){
+            var e = Evento("Livro: ${i}", "Descrição: ${i}", "Autor: ${i}")
+            eventos.add(e)
+        }
+        var ea = MyAdapter(this, eventos){
+            //var i = Intent(Intent.ACTION_VIEW, Uri.parse("http:/www.google.com"))
+            var i = Intent(this@MainActivity, BookdescActivity::class.java)
+            i.putExtra("teste", "iphone")
+            i.putExtra("teste2", "ios")
+            startActivity(i)
+        }
+        rv.adapter = ea
+
     }
 
     override fun onBackPressed() {
