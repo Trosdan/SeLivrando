@@ -29,23 +29,49 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         mAuth = FirebaseAuth.getInstance() //Instacia do Firebase
+
+        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                // User is signed in
+                Log.d("FirebaseLogin", "onAuthStateChanged:signed_in:" + user.uid)
+            } else {
+                // User is signed out
+                Log.d("FirebaseLogin", "onAuthStateChanged:signed_out")
+            }
+            // ...
+        }
+
     }
 
+    override fun onStart() {
+        super.onStart()
+        mAuth?.addAuthStateListener(mAuthListener!!)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mAuthListener != null) {
+            mAuth?.removeAuthStateListener(mAuthListener!!);
+        }
+    }
+
+
     public fun btn_Login(view: View){
-
         mAuth?.signInWithEmailAndPassword(login.text.toString(), password.text.toString())
-            ?.addOnCompleteListener(this, OnCompleteListener<AuthResult> { task ->
-                Log.d("EmailPassword", "signInWithEmail:onComplete:" + task.isSuccessful)
+                ?.addOnCompleteListener(this) { task ->
+                    Log.d("FirebaseLogin", "signInWithEmail:onComplete:" + task.isSuccessful)
 
-                if (!task.isSuccessful) {
-                    Toast.makeText(this@LoginActivity, "Falha no Login",
-                            Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this@LoginActivity, "Logou!",
-                            Toast.LENGTH_SHORT).show()
+                    // If sign in fails, display a message to the user. If sign in succeeds
+                    // the auth state listener will be notified and logic to handle the
+                    // signed in user can be handled in the listener.
+                    if (!task.isSuccessful) {
+                        Log.w("FirebaseLogin", "signInWithEmail:failed", task.exception)
+                        Toast.makeText(this@LoginActivity, "Falha no login",
+                                Toast.LENGTH_SHORT).show()
+                    }
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 }
-            })
     }
 
 
