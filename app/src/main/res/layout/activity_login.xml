@@ -27,7 +27,7 @@
         android:ems="10"
         android:hint="SENHA"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox"
+        app:layout_constraintBottom_toTopOf="@+id/manterConect"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -51,10 +51,10 @@
         android:onClick="btn_Login"
         android:text="@string/login"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/manterConect" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -82,7 +82,7 @@
         app:srcCompat="@mipmap/newicon_launcher" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/manterConect"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Manter Conectado"
@@ -91,5 +91,15 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/password" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="btn_CadasteSe"
+        android:text="Cadastre-se"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toEndOf="@+id/button" />
 
 </android.support.constraint.ConstraintLayout>

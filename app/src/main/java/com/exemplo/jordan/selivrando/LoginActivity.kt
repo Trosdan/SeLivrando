@@ -1,8 +1,11 @@
 package com.exemplo.jordan.selivrando
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.Preference
+import android.preference.PreferenceManager
 import android.support.annotation.NonNull
 import android.support.v4.app.FragmentActivity
 import android.util.Log
@@ -28,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        mAuth = FirebaseAuth.getInstance() //Instacia do Firebase
+        mAuth = FirebaseAuth.getInstance()
 
         mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val user = firebaseAuth.currentUser
@@ -40,6 +43,10 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("FirebaseLogin", "onAuthStateChanged:signed_out")
             }
             // ...
+        }
+
+        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("ManterConectado", false)){
+         
         }
 
     }
@@ -70,9 +77,16 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this@LoginActivity, "Falha no login",
                                 Toast.LENGTH_SHORT).show()
                     }
+                    if(manterConect.isChecked) {
+                        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("ManterConectado", true).commit()
+                        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserUID", task.getResult().user.uid).commit()
+                    }
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 }
     }
 
+    public fun btn_CadasteSe(view: View) {
+        startActivity(Intent(this@LoginActivity, CadastroUsuario::class.java))
+    }
 
 }

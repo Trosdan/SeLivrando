@@ -6,7 +6,7 @@ class Usuario (
     var email: String,
     var telefone: String,
     var endereço: String,
-    var idade: Int,
+    var idade: String,
     var credito: Int,
     var doacoes: Int,
     var avaliacao: Int,

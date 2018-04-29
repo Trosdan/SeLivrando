@@ -41,9 +41,11 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".BookdescActivity"
-            android:label="BookdescActivity"/>
+            android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".BookdescActivity"
+            android:label="BookdescActivity" />
+        <activity android:name=".CadastroUsuario"></activity>
     </application>
 
 </manifest>
