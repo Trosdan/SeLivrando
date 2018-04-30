@@ -2,6 +2,7 @@ package com.exemplo.jordan.selivrando
 
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
@@ -11,11 +12,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
-import android.widget.Toast
 import com.exemplo.jordan.selivrando.models.Usuario
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -24,7 +22,9 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val user = FirebaseAuth.getInstance().currentUser
+    private var user = FirebaseAuth.getInstance().currentUser
+    private var mAuth: FirebaseAuth? = null
+    private var mAuthListener: FirebaseAuth.AuthStateListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -32,16 +32,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        if (user != null) {
-            Toast.makeText(this@MainActivity, "Usuario Logado " + user.email, Toast.LENGTH_LONG).show()
-        } else {
-            Toast.makeText(this@MainActivity, "Nenhum usuario logado", Toast.LENGTH_LONG).show()
-        }
-
-
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            startActivity(Intent(this@MainActivity, CadastroLivro::class.java))
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -69,6 +61,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         rv.adapter = ea
     }
 
+    public override fun onStart() {
+        super.onStart()
+        mAuth?.addAuthStateListener(mAuthListener!!)
+    }
+
+    public override fun onStop() {
+        super.onStop()
+        if (mAuthListener != null) {
+            mAuth?.removeAuthStateListener(mAuthListener!!)
+        }
+    }
+
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
@@ -80,6 +84,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+        userName.text = user?.displayName
         userEmail.text = user?.email  //Muda usuario
         return true
     }
@@ -105,6 +110,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_logout ->{
                 FirebaseAuth.getInstance().signOut()
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("ManterConectado", false).commit()
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserUID", "").commit()
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserEmail", "").commit()
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserPassword", "").commit()
+                onBackPressed()
             }
         }
 
@@ -114,10 +124,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     public fun btn_FirstBook(view: View){
         startActivity(Intent(this@MainActivity, BookdescActivity::class.java))
-    }
-
-    fun qualquermerdaai(){
-
-
     }
 }

@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SeLivrando.iml" filepath="$PROJECT_DIR$/SeLivrando.iml" />
-      <module fileurl="file://C:\Users\eqs\Documents\ProjetoGit\SeLivrando\SeLivrando.iml" filepath="C:\Users\eqs\Documents\ProjetoGit\SeLivrando\SeLivrando.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\eqs\Documents\ProjetoGit\SeLivrando\app\app.iml" filepath="C:\Users\eqs\Documents\ProjetoGit\SeLivrando\app\app.iml" />
     </modules>
   </component>
 </project>

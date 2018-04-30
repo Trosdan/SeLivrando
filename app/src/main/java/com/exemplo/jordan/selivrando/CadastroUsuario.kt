@@ -48,8 +48,6 @@ class CadastroUsuario : AppCompatActivity() {
                         Toast.makeText(this@CadastroUsuario, "Falha ao Cadastrar",
                                 Toast.LENGTH_SHORT).show()
                     }
-                    Toast.makeText(this@CadastroUsuario, task.getResult().user.uid.toString(),
-                            Toast.LENGTH_SHORT).show()
                     var usuario = Usuario(
                             task.getResult().user.uid.toString(),
                             cad_Nome.text.toString(),

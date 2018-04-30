@@ -46,7 +46,20 @@ class LoginActivity : AppCompatActivity() {
         }
 
         if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("ManterConectado", false)){
-         
+            mAuth?.signInWithEmailAndPassword(PreferenceManager.getDefaultSharedPreferences(this).getString("UserEmail", ""), PreferenceManager.getDefaultSharedPreferences(this).getString("UserPassword", ""))
+                    ?.addOnCompleteListener(this) { task ->
+                        Log.d("FirebaseLogin", "signInWithEmail:onComplete:" + task.isSuccessful)
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful) {
+                            Log.w("FirebaseLogin", "signInWithEmail:failed", task.exception)
+                            Toast.makeText(this@LoginActivity, "Falha no login",
+                                    Toast.LENGTH_SHORT).show()
+                        }
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    }
         }
 
     }
@@ -80,6 +93,8 @@ class LoginActivity : AppCompatActivity() {
                     if(manterConect.isChecked) {
                         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("ManterConectado", true).commit()
                         PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserUID", task.getResult().user.uid).commit()
+                        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserEmail", login.text.toString()).commit()
+                        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserPassword", password.text.toString()).commit()
                     }
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 }
