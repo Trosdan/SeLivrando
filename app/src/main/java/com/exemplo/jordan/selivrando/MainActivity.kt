@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -17,7 +16,6 @@ import android.widget.Toast
 import com.exemplo.jordan.selivrando.models.Livro
 import com.exemplo.jordan.selivrando.models.Usuario
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -26,8 +24,6 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
-
-
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -88,18 +84,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         rv.setHasFixedSize(true)
         rv.layoutManager = LinearLayoutManager(this)
 
-        val postListener = object : ValueEventListener {
+        val postListener = mDatabase?.addValueEventListener( object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
-                // ...
+
+                var arrayLivros:ArrayList<Livro> = ArrayList<Livro>()
+                var livros = dataSnapshot.child("livros").children
+                livros.forEach {
+                    var livro: Livro? = it.getValue(Livro::class.java)
+                    //livro?.proprietario = dataSnapshot.child("users/" + livro?.proprietario)
+                    Log.d("Livros", livro?.proprietario)
+                    Log.d("Livros", dataSnapshot.child("users").child(livro?.proprietario).child("nome").getValue().toString())
+                    livro?.proprietario = dataSnapshot.child("users").child(livro?.proprietario).child("nome").getValue().toString()
+                    arrayLivros.add(livro!!)
+                }
+                var ea = MyAdapter(this, arrayLivros){
+                    var i = Intent(this@MainActivity, BookdescActivity::class.java)
+                    i.putExtra("livroId", it.id_livro)
+                    startActivity(i)
+                }
+                rv.adapter = ea
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
                 // ...
             }
-        }
+        })
 
+        /*
         var eventos:ArrayList<Livro> = ArrayList<Livro>()
         for(i in 0..100){
             var e = Livro("Livro: ${i}", "Descrição: ${i}", "Autor: ${i}")
@@ -111,6 +124,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(i)
         }
         rv.adapter = ea
+        */
     }
 
     public override fun onStart() {

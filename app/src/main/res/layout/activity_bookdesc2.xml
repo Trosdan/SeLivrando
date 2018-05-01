@@ -63,7 +63,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/LivroProprietario" />
+        app:layout_constraintTop_toBottomOf="@+id/livroProprietario" />
 
     <TextView
         android:id="@+id/livroAno"
@@ -80,8 +80,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="ISBN: 651864"
-        app:layout_constraintBaseline_toBaselineOf="@+id/LivroProprietario"
-        app:layout_constraintStart_toEndOf="@+id/LivroProprietario" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/livroProprietario"
+        app:layout_constraintStart_toEndOf="@+id/livroProprietario" />
 
     <TextView
         android:id="@+id/livroPaginas"
@@ -93,7 +93,7 @@
         app:layout_constraintStart_toEndOf="@+id/livroEdicao" />
 
     <TextView
-        android:id="@+id/LivroProprietario"
+        android:id="@+id/livroProprietario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -106,9 +106,10 @@
         android:id="@+id/livroEdicao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Edição: 2 º Edição"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        tools:layout_editor_absoluteX="30dp" />
+        app:layout_constraintStart_toEndOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
 </android.support.constraint.ConstraintLayout>

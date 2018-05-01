@@ -46,7 +46,7 @@ class CadastroLivro : AppCompatActivity() {
                         idLivro.toString(),
                         livroTitulo.text.toString(),
                         livroAutor.text.toString(),
-                        LivroProprietario.text.toString(),
+                        livroProprietario.text.toString(),
                         livroEdicao.text.toString(),
                         livroDescricao.text.toString(),
                         Genero.CIENCIA,

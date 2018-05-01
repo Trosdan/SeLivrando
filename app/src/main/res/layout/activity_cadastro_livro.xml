@@ -54,14 +54,14 @@
             android:ems="10"
             android:hint="Autor"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/LivroProprietario"
+            app:layout_constraintBottom_toTopOf="@+id/livroProprietario"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/livroTitulo" />
 
         <EditText
-            android:id="@+id/LivroProprietario"
+            android:id="@+id/livroProprietario"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -90,7 +90,7 @@
             app:layout_constraintBottom_toTopOf="@+id/livroDescricao"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/LivroProprietario" />
+            app:layout_constraintTop_toBottomOf="@+id/livroProprietario" />
 
         <EditText
             android:id="@+id/livroDescricao"
