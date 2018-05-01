@@ -1,6 +1,6 @@
 package com.exemplo.jordan.selivrando.models
 
-class Livro (
+data class Livro (
     var id_livro: String,
     var titulo: String,
     var autor: String,

@@ -18,8 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import com.google.firebase.internal.FirebaseAppHelper.getUid
 import com.google.firebase.auth.FirebaseUser
-
-
+import com.google.firebase.iid.FirebaseInstanceId
 
 
 class LoginActivity : AppCompatActivity() {
@@ -38,6 +37,8 @@ class LoginActivity : AppCompatActivity() {
             if (user != null) {
                 // User is signed in
                 Log.d("FirebaseLogin", "onAuthStateChanged:signed_in:" + user.uid)
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
             } else {
                 // User is signed out
                 Log.d("FirebaseLogin", "onAuthStateChanged:signed_out")
@@ -46,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("ManterConectado", false)){
-            mAuth?.signInWithEmailAndPassword(PreferenceManager.getDefaultSharedPreferences(this).getString("UserEmail", ""), PreferenceManager.getDefaultSharedPreferences(this).getString("UserPassword", ""))
+            mAuth?.signInWithCustomToken(PreferenceManager.getDefaultSharedPreferences(this).getString("UserToken", ""))
                     ?.addOnCompleteListener(this) { task ->
                         Log.d("FirebaseLogin", "signInWithEmail:onComplete:" + task.isSuccessful)
 
@@ -58,7 +59,6 @@ class LoginActivity : AppCompatActivity() {
                             Toast.makeText(this@LoginActivity, "Falha no login",
                                     Toast.LENGTH_SHORT).show()
                         }
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     }
         }
 
@@ -93,10 +93,8 @@ class LoginActivity : AppCompatActivity() {
                     if(manterConect.isChecked) {
                         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("ManterConectado", true).commit()
                         PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserUID", task.getResult().user.uid).commit()
-                        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserEmail", login.text.toString()).commit()
-                        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserPassword", password.text.toString()).commit()
+                        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserToken", FirebaseInstanceId.getInstance().token).commit()
                     }
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 }
     }
 

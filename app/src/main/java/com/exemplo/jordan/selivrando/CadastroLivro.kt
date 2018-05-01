@@ -2,14 +2,13 @@ package com.exemplo.jordan.selivrando
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.exemplo.jordan.selivrando.models.Genero
 import com.exemplo.jordan.selivrando.models.Livro
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import java.time.LocalTime
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
@@ -36,37 +35,36 @@ class CadastroLivro : AppCompatActivity() {
     }
 
     public fun btn_Cadastrar_Livro(view: View) {
-
-        var id = ""
-        var uid: String = ""
-
-        mDatabase?.addValueEventListener(object : ValueEventListener {
+        val addValueEventListener = mDatabase?.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                var id = dataSnapshot.child("livros").childrenCount.toString()
+                var idLivro = dataSnapshot.child("livros").childrenCount
+                idLivro += 1
 
+                var livro = Livro(
+                        idLivro.toString(),
+                        livroTitulo.text.toString(),
+                        livroAutor.text.toString(),
+                        LivroProprietario.text.toString(),
+                        livroEdicao.text.toString(),
+                        livroDescricao.text.toString(),
+                        Genero.CIENCIA,
+                        livroPaginas.text.toString(),
+                        livroISBN.text.toString(),
+                        "",
+                        user?.uid.toString()
+                )
+
+                Log.d("Count", "Variavel Id = " + livro.id_livro)
+                mDatabase?.child("livros")?.child(livro.id_livro)?.setValue(livro)
+                onBackPressed()
             }
 
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
             }
         })
-        var livro = Livro(
-                id,
-                livroTitulo.text.toString(),
-                livroAutor.text.toString(),
-                livroAno.text.toString(),
-                livroEdicao.text.toString(),
-                livroDescricao.text.toString(),
-                Genero.CIENCIA,
-                livroPaginas.text.toString(),
-                livroISBN.text.toString(),
-                "",
-                user?.uid.toString()
-        )
-
-        mDatabase?.child("livros")?.child(id)?.setValue(livro)
 
     }
 }

@@ -24,8 +24,7 @@ class MyAdapter (val context: Context, val eventos:ArrayList<Evento>, val clickL
 
     override fun onBindViewHolder(holder:ViewHolder , position: Int) {
         holder.itemView.tvNome.text = eventos[position].nome
-        holder.itemView.tvDesc.text = eventos[position].desc
-        holder.itemView.tvLocal.text = eventos[position].local
+        holder.itemView.tvuUerPublic.text = eventos[position].desc
 
         holder.itemView.setOnClickListener{clickListener(eventos[position])}
     }
