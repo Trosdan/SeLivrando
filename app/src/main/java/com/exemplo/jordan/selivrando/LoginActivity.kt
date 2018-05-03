@@ -32,12 +32,12 @@ class LoginActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
 
-        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->  //Função que escuta quando o usuario faz o login, ou é desconectdo
             val user = firebaseAuth.currentUser
             if (user != null) {
                 // User is signed in
                 Log.d("FirebaseLogin", "onAuthStateChanged:signed_in:" + user.uid)
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java)) // Caso for conectado va para proxima tela
                 finish()
             } else {
                 // User is signed out
@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
             // ...
         }
 
-        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("ManterConectado", false)){
+        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("ManterConectado", false)){ //Login por SharedPreference, Usando o token gerado pelo Firebase
             mAuth?.signInWithCustomToken(PreferenceManager.getDefaultSharedPreferences(this).getString("UserToken", ""))
                     ?.addOnCompleteListener(this) { task ->
                         Log.d("FirebaseLogin", "signInWithEmail:onComplete:" + task.isSuccessful)
@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
 
 
     public fun btn_Login(view: View){
-        mAuth?.signInWithEmailAndPassword(login.text.toString(), password.text.toString())
+        mAuth?.signInWithEmailAndPassword(login.text.toString(), password.text.toString())  // Pega Email e senha do usuario, para fazer o login
                 ?.addOnCompleteListener(this) { task ->
                     Log.d("FirebaseLogin", "signInWithEmail:onComplete:" + task.isSuccessful)
 
@@ -90,7 +90,7 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this@LoginActivity, "Falha no login",
                                 Toast.LENGTH_SHORT).show()
                     }
-                    if(manterConect.isChecked) {
+                    if(manterConect.isChecked) {            // Caso tenha marcado o check box, Sera guardado o Token do usuario
                         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("ManterConectado", true).commit()
                         PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserUID", task.getResult().user.uid).commit()
                         PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserToken", FirebaseInstanceId.getInstance().token).commit()

@@ -22,10 +22,10 @@ class BookdescActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                var idLivro = intent.extras.get("livroId").toString()
-                var livro = dataSnapshot.child("livros").child(idLivro).getValue(Livro::class.java)
+                var idLivro = intent.extras.get("livroId").toString()       // Tras o dado passado da Activity anterior
+                var livro = dataSnapshot.child("livros").child(idLivro).getValue(Livro::class.java) //traz o livro pelo ID
 
-                livroTitulo.text = livro?.titulo
+                livroTitulo.text = livro?.titulo                                    //Adiciona os dados
                 livroGenero.text = "Genero: ${livro?.genero.toString()}"
                 livroAno.text = "Ano: ${livro?.ano}"
                 livroEdicao.text = "Edição: ${livro?.edicao}º Edição"

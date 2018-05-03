@@ -28,7 +28,7 @@ import com.google.firebase.database.ValueEventListener
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var user = FirebaseAuth.getInstance().currentUser
+    private var user = FirebaseAuth.getInstance().currentUser  //Pega a instancia do usuario logado
     private var user2: Usuario? = null
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
@@ -41,12 +41,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         mAuth = FirebaseAuth.getInstance()
-        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->    //Se o usario estiver logado, Mostrar na tela o email
             user = firebaseAuth.currentUser
             if (user != null) {
                 // User is signed in
                 Toast.makeText(this@MainActivity, "Conectado: " + user?.email, Toast.LENGTH_LONG).show()
-            } else {
+            } else {                                                        //Se fizer logout, Va para tela do login
                 // User is signed out
                 Toast.makeText(this@MainActivity, "Desconectado", Toast.LENGTH_LONG).show()
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();      //Vai no banco pegar os dados do usuario
         val getUsuario = mDatabase?.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
 
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener { view ->        //Recyclo View
             startActivity(Intent(this@MainActivity, CadastroLivro::class.java))
         }
 
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         rv.setHasFixedSize(true)
         rv.layoutManager = LinearLayoutManager(this)
 
-        val postListener = mDatabase?.addValueEventListener( object : ValueEventListener {
+        val postListener = mDatabase?.addValueEventListener( object : ValueEventListener { // Pega no banco os livros para montar a Recyclo View
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
 
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     livro?.proprietario = dataSnapshot.child("users").child(livro?.proprietario).child("nome").getValue().toString()
                     arrayLivros.add(livro!!)
                 }
-                var ea = MyAdapter(this, arrayLivros){
+                var ea = MyAdapter(this, arrayLivros){  //CAso clicado em algum item da Recyclo View, Acessar o ID em questão e enviar para outra Activity, Para puxar os dados!
                     var i = Intent(this@MainActivity, BookdescActivity::class.java)
                     i.putExtra("livroId", it.id_livro)
                     startActivity(i)
@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed() {  //Voltar tela
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
@@ -147,13 +147,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean { //Criação da nav-drawe
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
 
         //Pesquisa novamente no banco o usuario para puxar os dados necessarios
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        val getUsuario = mDatabase?.addListenerForSingleValueEvent(object : ValueEventListener {
+        val getUsuario = mDatabase?.addListenerForSingleValueEvent(object : ValueEventListener { //Puxa do banco dados do usuario para colocar dos dados do usuario no Nav-Drawer
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
@@ -188,7 +188,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_manage -> {
 
             }
-            R.id.nav_logout ->{
+            R.id.nav_logout ->{   // Caso ser feito logout, esquecer os SharedPreference
                 FirebaseAuth.getInstance().signOut()
                 PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("ManterConectado", false).commit()
                 PreferenceManager.getDefaultSharedPreferences(this).edit().putString("UserToken", "").commit()
