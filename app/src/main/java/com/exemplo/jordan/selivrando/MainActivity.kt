@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
 
 
-        fab.setOnClickListener { view ->        //Recyclo View
+        fab.setOnClickListener { view ->        //FloatButton
             startActivity(Intent(this@MainActivity, CadastroLivro::class.java))
         }
 
@@ -92,9 +92,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 var livros = dataSnapshot.child("livros").children
                 livros.forEach {
                     var livro: Livro? = it.getValue(Livro::class.java)
-                    //livro?.proprietario = dataSnapshot.child("users/" + livro?.proprietario)
-                    Log.d("Livros", livro?.proprietario)
-                    Log.d("Livros", dataSnapshot.child("users").child(livro?.proprietario).child("nome").getValue().toString())
                     livro?.proprietario = dataSnapshot.child("users").child(livro?.proprietario).child("nome").getValue().toString()
                     arrayLivros.add(livro!!)
                 }
