@@ -185,6 +185,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_manage -> {
 
             }
+            R.id.nav_maps -> {
+                startActivity(Intent(this@MainActivity, MapsActivity::class.java))
+            }
             R.id.nav_logout ->{   // Caso ser feito logout, esquecer os SharedPreference
                 FirebaseAuth.getInstance().signOut()
                 PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("ManterConectado", false).commit()
