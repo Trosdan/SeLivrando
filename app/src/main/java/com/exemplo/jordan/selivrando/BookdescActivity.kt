@@ -1,7 +1,9 @@
 package com.exemplo.jordan.selivrando
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.exemplo.jordan.selivrando.models.Livro
 import com.exemplo.jordan.selivrando.models.Usuario
 import com.google.firebase.database.*
@@ -11,6 +13,9 @@ class BookdescActivity : AppCompatActivity() {
 
 
     private var mDatabase: DatabaseReference? = null
+
+    public var endereco = ""
+    public var livroId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,16 +36,30 @@ class BookdescActivity : AppCompatActivity() {
                 livroEdicao.text = "Edição: ${livro?.edicao}º Edição"
                 livroPaginas.text = "Paginas: ${livro?.paginas}"
                 livroProprietario.text = "Publicado: ${dataSnapshot.child("users").child(livro?.proprietario).child("nome").getValue().toString()}"
+                proprietarioEndereco.text = "Endereço: ${dataSnapshot.child("users").child(livro?.proprietario).child("endereço").getValue().toString()}"
+                endereco = dataSnapshot.child("users").child(livro?.proprietario).child("endereço").getValue().toString()
                 livroISBN.text = "ISBN: ${livro?.isbn}"
                 livroDescricao.text = "Descrição: \n${livro?.descricao}"
+                livroId = livro?.id_livro.toString()
 
             }
-
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
             }
         })
 
+    }
+
+    public fun btnVerMapa(view: View) {
+        var i = Intent(this@BookdescActivity, MapsActivity::class.java)
+        i.putExtra("endereco", endereco)
+        startActivity(i)
+    }
+
+    public fun btnFazerPedido(view: View) {
+        var i = Intent(this@BookdescActivity, MainActivity::class.java)
+        i.putExtra("livroid", livroId)
+        startActivity(i)
     }
 
     override fun onSupportNavigateUp(): Boolean {

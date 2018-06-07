@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var mDatabase: DatabaseReference? = null
+    private var logou = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -45,7 +46,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             user = firebaseAuth.currentUser
             if (user != null) {
                 // User is signed in
-                Toast.makeText(this@MainActivity, "Conectado: " + user?.email, Toast.LENGTH_LONG).show()
+                if(logou==false){
+                    Toast.makeText(this@MainActivity, "Conectado: " + user?.email, Toast.LENGTH_LONG).show()
+                    logou=true
+                }
+
             } else {                                                        //Se fizer logout, Va para tela do login
                 // User is signed out
                 Toast.makeText(this@MainActivity, "Desconectado", Toast.LENGTH_LONG).show()
