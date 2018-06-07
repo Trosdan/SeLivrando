@@ -8,12 +8,9 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
-import com.exemplo.jordan.selivrando.models.Doacoes
 import com.exemplo.jordan.selivrando.models.Livro
 import com.exemplo.jordan.selivrando.models.Usuario
 import com.google.firebase.auth.FirebaseAuth
@@ -96,8 +93,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     livro?.proprietario = dataSnapshot.child("users").child(livro?.proprietario).child("nome").getValue().toString()
                     arrayLivros.add(livro!!)
                 }
-                var ea = MyAdapter(this, arrayLivros){  //CAso clicado em algum item da Recyclo View, Acessar o ID em questão e enviar para outra Activity, Para puxar os dados!
-                    var i = Intent(this@MainActivity, BookdescActivity::class.java)
+                var ea = MyAdapterBook(this, arrayLivros){  //CAso clicado em algum item da Recyclo View, Acessar o ID em questão e enviar para outra Activity, Para puxar os dados!
+                    var i = Intent(this@MainActivity, Bookdesc::class.java)
                     i.putExtra("livroId", it.id_livro)
                     startActivity(i)
                 }
@@ -116,7 +113,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var e = Livro("Livro: ${i}", "Descrição: ${i}", "Autor: ${i}")
             eventos.add(e)
         }
-        var ea = MyAdapter(this, eventos){
+        var ea = MyAdapterBook(this, eventos){
             //var i = Intent(Intent.ACTION_VIEW, Uri.parse("http:/www.google.com"))
             var i = Intent(this@MainActivity, BookdescActivity::class.java)
             startActivity(i)
@@ -180,31 +177,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_meuslivros -> {
-                startActivity(Intent(this@MainActivity, MeusLivros::class.java))
+            R.id.nav_profile -> {
+                startActivity(Intent(this@MainActivity, Profile::class.java))
             }
-            R.id.nav_manage -> {
-                val addValueEventListener = mDatabase?.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        var doacao = Doacoes(
-                                "Ola Mundo",
-                                "Praça Solon de Lucena",
-                                "Jordan",
-                                "18/05/2018",
-                                "Rodrigo"
-                        )
-                        mDatabase?.child("doacoes")?.child(user?.uid.toString())?.child("0")?.setValue("Alouuu")
-                        mDatabase?.child("doacoes")?.child(user?.uid.toString())?.child((dataSnapshot.child("doacoes").child(user?.uid.toString()).childrenCount + 1.toLong()).toString())?.setValue(doacao)
-
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        // Failed to read value
-                    }
-                })
+            R.id.nav_my_books -> {
+                startActivity(Intent(this@MainActivity, MyBooksList::class.java))
             }
-            R.id.nav_maps -> {
-                startActivity(Intent(this@MainActivity, MapsActivity::class.java))
+            R.id.nav_requestslist -> {
+                startActivity(Intent(this@MainActivity, RequestsList::class.java))
             }
             R.id.nav_logout ->{   // Caso ser feito logout, esquecer os SharedPreference
                 FirebaseAuth.getInstance().signOut()
@@ -215,9 +195,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    public fun btn_FirstBook(view: View){
-        startActivity(Intent(this@MainActivity, BookdescActivity::class.java))
     }
 }

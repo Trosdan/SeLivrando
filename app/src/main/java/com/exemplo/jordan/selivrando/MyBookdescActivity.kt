@@ -5,16 +5,16 @@ import android.os.Bundle
 import com.exemplo.jordan.selivrando.models.Livro
 import com.exemplo.jordan.selivrando.models.Usuario
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_bookdesc2.*
+import kotlinx.android.synthetic.main.activity_mybookdesc.*
 
-class BookdescActivity : AppCompatActivity() {
+class MyBookdescActivity : AppCompatActivity() {
 
 
     private var mDatabase: DatabaseReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bookdesc2)
+        setContentView(R.layout.activity_mybookdesc)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mDatabase = FirebaseDatabase.getInstance().getReference();

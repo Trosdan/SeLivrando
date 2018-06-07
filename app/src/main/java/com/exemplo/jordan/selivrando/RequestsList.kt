@@ -3,15 +3,15 @@ package com.exemplo.jordan.selivrando
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Debug
 import android.support.v7.widget.LinearLayoutManager
-import com.exemplo.jordan.selivrando.models.Livro
-import com.exemplo.jordan.selivrando.models.Usuario
+import android.util.Log
+import com.exemplo.jordan.selivrando.models.Doacoes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_meus_livros.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 
-class MeusLivros : AppCompatActivity() {
+class RequestsList : AppCompatActivity() {
 
 
     private var user = FirebaseAuth.getInstance().currentUser  //Pega a instancia do usuario logado
@@ -21,9 +21,8 @@ class MeusLivros : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_meus_livros)
-
-
+        setContentView(R.layout.activity_requests_list)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         rv.setHasFixedSize(true)
@@ -33,40 +32,34 @@ class MeusLivros : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
 
-                var arrayLivros:ArrayList<Livro> = ArrayList<Livro>()
-                var livros = dataSnapshot.child("livros").children
-                livros.forEach {
-                    if(it.child("proprietario").getValue().toString() == user?.uid.toString()){
-                    var livro: Livro? = it.getValue(Livro::class.java)
-                    livro?.proprietario = dataSnapshot.child("users").child(livro?.proprietario).child("nome").getValue().toString()
-                    arrayLivros.add(livro!!)
-                }
+                var arrayDoacoes:ArrayList<Doacoes> = ArrayList<Doacoes>()
+                var doacoes = dataSnapshot.child("doacoes").child(user?.uid.toString()).children
+                doacoes.forEach {
+                    var doacao: Doacoes? = it.getValue(Doacoes::class.java)
+                    Log.i("Firebase", doacao?.toString())
+                    Log.i("Firebase", doacao?.doador)
+                    doacao?.doador = dataSnapshot.child("users").child(doacao?.doador).child("nome").getValue().toString()
+                    doacao?.interessado = dataSnapshot.child("users").child(doacao?.doador).child("nome").getValue().toString()
+                    arrayDoacoes.add(doacao!!)
 
                 }
-                var ea = MyAdapter(this, arrayLivros){  //CAso clicado em algum item da Recyclo View, Acessar o ID em questão e enviar para outra Activity, Para puxar os dados!
-                    var i = Intent(this@MeusLivros, BookdescActivity::class.java)
-                    i.putExtra("livroId", it.id_livro)
+                var ea = MyAdapterRequests(this, arrayDoacoes){  //CAso clicado em algum item da Recyclo View, Acessar o ID em questão e enviar para outra Activity, Para puxar os dados!
+                    var i = Intent(this@RequestsList, AcceptRequest::class.java)
+                    i.putExtra("RequestId", it.id)
                     startActivity(i)
                 }
                 rv.adapter = ea
             }
-
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
                 // ...
             }
         })
+
     }
 
-    public override fun onStart() {
-        super.onStart()
-        mAuth?.addAuthStateListener(mAuthListener!!)
-    }
-
-    public override fun onStop() {
-        super.onStop()
-        if (mAuthListener != null) {
-            mAuth?.removeAuthStateListener(mAuthListener!!)
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

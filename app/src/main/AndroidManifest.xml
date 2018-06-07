@@ -8,6 +8,7 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -43,12 +44,17 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".BookdescActivity"
-            android:label="BookdescActivity" />
+            android:name=".MyBookdescActivity"
+            android:label="Meu Livro" />
+        <activity
+            android:name=".MyBooksList"
+            android:label="Meus Livros" />
         <activity android:name=".CadastroUsuario" />
         <activity android:name=".CadastroLivro" />
-        <activity android:name=".FazerPedido" />
-        <activity android:name=".MeusLivros"></activity>
+        <activity android:name=".Bookdesc" />
+        <activity android:name=".Profile" />
+        <activity android:name=".RequestsList" />
+        <activity android:name=".AcceptRequest"></activity>
     </application>
 
 </manifest>

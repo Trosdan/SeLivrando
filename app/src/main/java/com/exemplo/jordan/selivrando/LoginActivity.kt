@@ -1,6 +1,7 @@
 package com.exemplo.jordan.selivrando
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -26,9 +27,13 @@ class LoginActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
 
+    var br = ConnReceiver()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        registerReceiver(br, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -79,6 +84,11 @@ class LoginActivity : AppCompatActivity() {
         if (mAuthListener != null) {
             mAuth?.removeAuthStateListener(mAuthListener!!);
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(br)
     }
 
 

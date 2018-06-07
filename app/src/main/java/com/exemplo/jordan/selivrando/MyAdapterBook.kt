@@ -11,8 +11,8 @@ import kotlinx.android.synthetic.main.itemlist.view.*
 /**
  * Created by eqs on 20/03/2018.
  */
-class MyAdapter (val context: ValueEventListener, val livros:ArrayList<Livro>, val clickListener:(Livro)->Unit):
-        RecyclerView.Adapter<MyAdapter.ViewHolder>(){
+class MyAdapterBook(val context: ValueEventListener, val livros:ArrayList<Livro>, val clickListener:(Livro)->Unit):
+        RecyclerView.Adapter<MyAdapterBook.ViewHolder>(){
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
     }
