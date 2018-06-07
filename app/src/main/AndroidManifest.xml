@@ -46,7 +46,9 @@
             android:name=".BookdescActivity"
             android:label="BookdescActivity" />
         <activity android:name=".CadastroUsuario" />
-        <activity android:name=".CadastroLivro"></activity>
+        <activity android:name=".CadastroLivro" />
+        <activity android:name=".FazerPedido" />
+        <activity android:name=".MeusLivros"></activity>
     </application>
 
 </manifest>
