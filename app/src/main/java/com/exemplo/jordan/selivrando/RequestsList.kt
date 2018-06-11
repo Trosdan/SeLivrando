@@ -36,10 +36,12 @@ class RequestsList : AppCompatActivity() {
                 var doacoes = dataSnapshot.child("doacoes").child(user?.uid.toString()).children
                 doacoes.forEach {
                     var doacao: Doacoes? = it.getValue(Doacoes::class.java)
-                    Log.i("Firebase", doacao?.toString())
-                    Log.i("Firebase", doacao?.doador)
-                    doacao?.doador = dataSnapshot.child("users").child(doacao?.doador).child("nome").getValue().toString()
-                    doacao?.interessado = dataSnapshot.child("users").child(doacao?.doador).child("nome").getValue().toString()
+                    var aa = dataSnapshot.child("livros").child(doacao?.livro).child("titulo").getValue().toString()
+                    var bb = dataSnapshot.child("users").child(doacao?.interessado).child("nome").getValue().toString()
+                    Log.i("Firebase", aa)
+                    Log.i("Firebase", bb)
+                    doacao?.livro = aa
+                    doacao?.interessado = bb
                     arrayDoacoes.add(doacao!!)
 
                 }

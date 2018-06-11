@@ -62,7 +62,6 @@ class Bookdesc : AppCompatActivity() {
         i.putExtra("livroid", livroId)
         val addValueEventListener = mDatabase?.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                mDatabase?.child("doacoes")?.child(proprietario)?.child("0")?.setValue("Alouuu")
                 var idRequest:Long? = dataSnapshot.child("doacoes").child(proprietario)?.childrenCount
                 idRequest = idRequest?.plus(1)
 

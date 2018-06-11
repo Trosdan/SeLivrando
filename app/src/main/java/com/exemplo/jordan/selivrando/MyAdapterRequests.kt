@@ -40,15 +40,15 @@ class MyAdapterRequests (val context: ValueEventListener, val doacoes:ArrayList<
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                holder.itemView.tvuUerPublic.text = dataSnapshot.child("livros").child(doacoes[position].livro).child("titulo").toString()
+
             }
 
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
             }
         })
-
-        holder.itemView.tvNome.text = doacoes[position].interessado.toString()
+        holder.itemView.tvuUerPublic.text = doacoes[position].livro
+        holder.itemView.tvNome.text = doacoes[position].interessado
 
         holder.itemView.setOnClickListener{clickListener(doacoes[position])}
     }
